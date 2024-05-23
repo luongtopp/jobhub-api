@@ -35,7 +35,8 @@ const io = require('socket.io')(server,
         pingTimeout: 60000,
         cors: {
             // origin: "http:localhost:5001",
-            origin: "https://jobhubflutternodejs-production.up.railway.app",
+            origin: "https://jobhub-api-production.up.railway.app",
+
         },
     });
 
