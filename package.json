@@ -28,8 +28,7 @@
     "@babel/cli": "^7.24.7",
     "@babel/core": "^7.24.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/preset-env": "^7.24.7",
-    "babel-cli": "^6.26.0"
+    "@babel/preset-env": "^7.24.7"
   },
   "babel": {
     "presets": [
