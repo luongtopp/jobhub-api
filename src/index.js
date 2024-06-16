@@ -35,8 +35,7 @@ const io = require('socket.io')(server,
         pingTimeout: 60000,
         cors: {
             // origin: "http:localhost:5001",
-            origin: "https://jobhub-api-production.up.railway.app",
-
+            origin: "https://jobhub-api-8zgd.onrender.com",
         },
     });
 
