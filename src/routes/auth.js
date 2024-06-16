@@ -5,6 +5,9 @@ const authController = require("../controllers/authContoller");
 // REGISTRATION 
 
 router.post("/register", authController.createUser);
+router.get("/test", (req, res) => {
+  res.send("thanh cong")
+});
 
 
 // LOGIN 
