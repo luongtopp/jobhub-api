@@ -3,12 +3,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const dotenv = require('dotenv');
 
-const authRoute = require("./routes/auth");
-const userRoute = require("./routes/user");
-const jobRoute = require("./routes/job");
-const bookmarkRoute = require("./routes/bookmark");
-const chatRoute = require("./routes/chat");
-const messageRoute = require("./routes/messages");
+const authRoute = require("../routes/auth");
+const userRoute = require("../routes/user");
+const jobRoute = require("../routes/job");
+const bookmarkRoute = require("../routes/bookmark");
+const chatRoute = require("../routes/chat");
+const messageRoute = require("../routes/messages");
 
 
 dotenv.config()
