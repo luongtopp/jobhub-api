@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --inspect ./src/index.js",
-    "production": "node ./src/index.js"
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel ./src -d ./build/src ",
+    "build": "npm run clean && npm run build-babel",
+    "production": "npm run build && node ./build/src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,5 +23,12 @@
     "nodemon": "^3.1.0",
     "punycode": "^2.3.1",
     "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.7",
+    "@babel/core": "^7.24.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/preset-env": "^7.24.7",
+    "babel-cli": "^6.26.0"
   }
 }
