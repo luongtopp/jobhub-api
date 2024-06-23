@@ -9,7 +9,7 @@ const jobRoute = require("./routes/job");
 const bookmarkRoute = require("./routes/bookmark");
 const chatRoute = require("./routes/chat");
 const messageRoute = require("./routes/messages");
-const errorHandlingMiddleware = require("./middleware/errorHandlingMiddleware");
+const { errorHandlingMiddleware } = require("./middleware/errorHandlingMiddleware");
 
 
 dotenv.config()
