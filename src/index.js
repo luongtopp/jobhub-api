@@ -9,6 +9,7 @@ const jobRoute = require("./routes/job");
 const bookmarkRoute = require("./routes/bookmark");
 const chatRoute = require("./routes/chat");
 const messageRoute = require("./routes/messages");
+const errorHandlingMiddleware = require("./middleware/errorHandlingMiddleware");
 
 
 dotenv.config()
@@ -27,6 +28,8 @@ app.use("/api/bookmarks", bookmarkRoute);
 app.use("/api/chats", chatRoute);
 app.use("/api/messages", messageRoute);
 
+// Middleware xử lý lỗi tập trung
+app.use(errorHandlingMiddleware)
 
 const server = app.listen(process.env.PORT || 4000, () => console.log(`Example app listening on port ${process.env.PORT}!`));
 

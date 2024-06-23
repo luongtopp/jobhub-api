@@ -49,36 +49,41 @@ module.exports = {
 
 
 
-    sendMessage: async (req, res) => {
-        const { content, chatId, receiver } = req.body;
-
-        if (!content || !chatId) {
-            console.log("Invalid data passed into request");
-            return res.status(400);
-        }
-
-        var newMessage = {
-            sender: req.user.id,
-            content: content,
-            receiver: receiver,
-            chat: chatId,
-        };
-
+    sendMessage: async (req, res, next) => {
         try {
-            var message = await Message.create(newMessage);
+            const { content, chatId, receiver } = req.body;
 
-            message = await message.populate("sender", "username profile email");
-            message = await message.populate("chat");
-            message = await User.populate(message, {
-                path: "chat.users",
-                select: "username profile email",
-            });
+            if (!content || !chatId) {
+                console.log("Invalid data passed into request");
+                return res.status(400);
+            }
 
-            await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+            var newMessage = {
+                sender: req.user.id,
+                content: content,
+                receiver: receiver,
+                chat: chatId,
+            };
 
-            res.json(message);
+            try {
+                var message = await Message.create(newMessage);
+
+                message = await message.populate("sender", "username profile email");
+                message = await message.populate("chat");
+                message = await User.populate(message, {
+                    path: "chat.users",
+                    select: "username profile email",
+                });
+
+                await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+
+                res.json(message);
+            } catch (error) {
+                res.status(400).json(error);
+            }
+
         } catch (error) {
-            res.status(400).json(error);
+            next(error)
         }
     }
 };

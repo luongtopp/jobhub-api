@@ -3,49 +3,52 @@ const User = require("../models/User");
 
 
 module.exports = {
-    accessChat: async (req, res) => {
-        const { userId } = req.body;
+    accessChat: async (req, res, next) => {
+        try {
+            const { userId } = req.body;
 
-        if (!userId) {
-            console.log("UserId param not sent with request");
-            return res.status(400);
-        }
-
-        var isChat = await Chat.find({
-            isGroupChat: false,
-            $and: [
-                { users: { $elemMatch: { $eq: req.user.id } } },
-                { users: { $elemMatch: { $eq: userId } } },
-            ],
-        })
-            .populate("users", "-password")
-            .populate("latestMessage");
-
-        isChat = await User.populate(isChat, {
-            path: "latestMessage.sender",
-            select: "username profile email",
-        });
-
-        if (isChat.length > 0) {
-            res.send(isChat[0]);
-        } else {
-            var chatData = {
-                chatName: req.user.id,
-                isGroupChat: false,
-                users: [req.user.id, userId],
-            };
-
-            try {
-                const createdChat = await Chat.create(chatData);
-                const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
-                    "users",
-                    "-password"
-                );
-                res.status(200).json(FullChat);
-            } catch (error) {
-                res.status(400).json("Error Creating Chat");
-
+            if (!userId) {
+                throw new Error("UserId parameter not sent with request")
             }
+
+            var isChat = await Chat.find({
+                isGroupChat: false,
+                $and: [
+                    { users: { $elemMatch: { $eq: req.user.id } } },
+                    { users: { $elemMatch: { $eq: userId } } },
+                ],
+            })
+                .populate("users", "-password")
+                .populate("latestMessage");
+
+            isChat = await User.populate(isChat, {
+                path: "latestMessage.sender",
+                select: "username profile email",
+            });
+
+            if (isChat.length > 0) {
+                res.send(isChat[0]);
+            } else {
+                var chatData = {
+                    chatName: req.user.id,
+                    isGroupChat: false,
+                    users: [req.user.id, userId],
+                };
+
+                try {
+                    const createdChat = await Chat.create(chatData);
+                    const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
+                        "users",
+                        "-password"
+                    );
+                    res.status(200).json(FullChat);
+                } catch (error) {
+                    res.status(400).json("Error Creating Chat");
+
+                }
+            }
+        } catch (error) {
+            next(error)
         }
     },
 
