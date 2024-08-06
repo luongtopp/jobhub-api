@@ -1,10 +1,17 @@
 const User = require("../models/User");
+const CryptoJS = require('crypto-js');
 
 module.exports = {
     updateUser: async (req, res) => {
         if (req.body.password) {
+            console.log(`Gia tri cua req.body.password: ${req.body.password}`);
+
             req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.SECRET).toString();
+            console.log(`Gia tri cua req.body.password: ${req.body.password}`);
         }
+
+        // req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.SECRET).toString();
+        // console.log(`Gia tri cua req.body.password: ${req.body.password}`);
         try {
             const updatedUser = await User.findByIdAndUpdate(
                 req.user.id, {
